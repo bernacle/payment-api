@@ -33,14 +33,22 @@
     });
 
     GET_TOKEN.post((req, res) => {
-      return stripe.tokens.create({
-        card: {
-          number: req.body.number,
-          exp_month: req.body.exp_month,
-          exp_year: req.body.exp_year,
-          cvc: req.body.cvc
-        }
-      });
+      return stripe.tokens
+        .create({
+          card: {
+            number: req.body.number,
+            exp_month: req.body.exp_month,
+            exp_year: req.body.exp_year,
+            cvc: req.body.cvc
+          }
+        })
+        .then(result =>
+          res
+            .status(HTTP_OK.code)
+            .json(result)
+            .end()
+        )
+        .catch(err => console.log(err));
     });
 
     DO_PAYMENT.post((req, res) => {
