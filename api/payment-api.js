@@ -22,6 +22,7 @@
   function paymentAPI(app) {
     const API_NAME = app.settings['API_NAME'];
     const PING = app.route(API_NAME + '/ping');
+    const GET_TOKEN = app.route(API_NAME + '/token');
     const DO_PAYMENT = app.route(API_NAME + '/pay');
 
     PING.get((req, res) => {
@@ -29,6 +30,17 @@
         .header('Content-Type', 'text/plain; charset=utf-8')
         .send('pong')
         .end();
+    });
+
+    GET_TOKEN.post((req, res) => {
+      return stripe.tokens.create({
+        card: {
+          number: req.body.number,
+          exp_month: req.body.exp_month,
+          exp_year: req.body.exp_year,
+          cvc: req.body.cvc
+        }
+      });
     });
 
     DO_PAYMENT.post((req, res) => {
