@@ -33,6 +33,7 @@
     });
 
     GET_TOKEN.post((req, res) => {
+      console.log(req);
       return stripe.tokens
         .create({
           card: {
@@ -57,7 +58,7 @@
           amount: req.body.amount,
           currency: 'usd',
           source: req.body.tokenId,
-          description: 'Test'
+          description: 'Charge Things'
         })
         .then(result =>
           res
