@@ -33,7 +33,6 @@
     });
 
     GET_TOKEN.post((req, res) => {
-      console.log(req);
       return stripe.tokens
         .create({
           card: {
@@ -49,7 +48,12 @@
             .json(result)
             .end()
         )
-        .catch(err => console.log(err));
+        .catch(err =>
+          res
+            .status(err.statusCode)
+            .json(err)
+            .end()
+        );
     });
 
     DO_PAYMENT.post((req, res) => {
@@ -66,7 +70,12 @@
             .json(result)
             .end()
         )
-        .catch(err => console.log(err));
+        .catch(err =>
+          res
+            .status(err.statusCode)
+            .json(err)
+            .end()
+        );
     });
   }
   module.exports = paymentAPI;
